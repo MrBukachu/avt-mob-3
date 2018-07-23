@@ -138,6 +138,26 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCreateMethodEx2()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        CheckSearch(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find search field",
+                5,
+                "We see unexpected title",
+                "Search…"
+        );
+
+
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -174,4 +194,13 @@ public class FirstTest {
         element.clear();
         return element;
     }
+
+    private WebElement CheckSearch (By by, String error_message, long timeoutInSeconds, String message, String expected)
+    {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        String search_title = element.getAttribute("text");
+        Assert.assertEquals(message, expected, search_title);
+        return element;
+    }
+
 }
