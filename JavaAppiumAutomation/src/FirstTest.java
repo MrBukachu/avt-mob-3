@@ -158,6 +158,59 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testCancelSearchEx3()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "New Zealand",
+                "Cannot find search input",
+                5
+        );
+
+        CheckSearch(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Constitutional monarchy in Oceania']"),
+                "Cannot find 'Constitutional monarchy in Oceania' on page",
+                5,
+                "We see unexpected title",
+                "Constitutional monarchy in Oceania"
+        );
+
+        CheckSearch(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Rugby union team of New Zealand']"),
+                "Cannot find 'Rugby union team of New Zealand' on page",
+                5,
+                "We see unexpected title",
+                "Rugby union team of New Zealand"
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find 'X' to cancel search",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Constitutional monarchy in Oceania']"),
+                "'Constitutional monarchy in Oceania' is still present on this page",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Rugby union team of New Zealand']"),
+                "'Rugby union team of New Zealand' is still present on this page",
+                5
+        );
+
+    }
+
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
