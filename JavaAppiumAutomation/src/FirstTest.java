@@ -302,13 +302,13 @@ public class FirstTest {
                 15
         );
 
-        int anount_of_search_results = getAmountOfElements(
+        int amount_of_search_results = getAmountOfElements(
                 By.xpath(search_result_locator)
         );
 
         Assert.assertTrue(
                 "We found too few results",
-                anount_of_search_results > 0
+                amount_of_search_results > 0
         );
     }
 
@@ -684,6 +684,38 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testAssertTitleEx6()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String search_line = "New Zealand";
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                search_line,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Constitutional monarchy in Oceania']"),
+                "Cannot find 'Constitutional monarchy in Oceania' input",
+                5
+        );
+
+        String search_result_title = "//*[@resource-id='org.wikipedia:id/view_page_title_text']";
+
+        assertElementPresent(
+                By.xpath(search_result_title),
+                "We've found no results by request " + search_line
+        );
+    }
+
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
@@ -796,9 +828,19 @@ public class FirstTest {
 
     private void assertElementNotPresent(By by, String error_message)
     {
-        int amount_of_elemants = getAmountOfElements(by);
-        if (amount_of_elemants > 0) {
+        int amount_of_elements = getAmountOfElements(by);
+        if (amount_of_elements > 0) {
             String default_message = "An element '" + by.toString() + "' supposed to be not present";
+            throw  new AssertionError(default_message + " " + error_message);
+        }
+    }
+
+    private void assertElementPresent(By by, String error_message)
+    {
+        waitForElementPresent(by, "Cannot find element" + error_message, 5);
+        int amount_of_elements = getAmountOfElements(by);;
+        if (amount_of_elements < 1) {
+            String default_message = "An element '" + by.toString() + "' supposed to be present";
             throw  new AssertionError(default_message + " " + error_message);
         }
     }
