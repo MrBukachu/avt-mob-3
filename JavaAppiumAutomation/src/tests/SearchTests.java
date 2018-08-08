@@ -50,4 +50,23 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.waitForEmptyResultsLabel();
         SearchPageObject.assertThereIsNoResultOfSearch();
     }
+
+    @Test
+    public void testCreateMethodEx2()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.CheckSearchText("Search…");
+    }
+
+    @Test
+    public void testCancelSearchEx3()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("New Zealand");
+        SearchPageObject.CheckSearchDoubleSubtitle();
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.waitForDoubleSubtitle();
+    }
 }

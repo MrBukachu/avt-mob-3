@@ -11,7 +11,10 @@ public class SearchPageObject extends MainPageObject{
     SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
     SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
     SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-    SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
+    SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
+    SEARCH_FIELD = "org.wikipedia:id/search_src_text",
+    FIRST_SUBTITLE = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Constitutional monarchy in Oceania']",
+    SECOND_SUBTITLE = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Rugby union team of New Zealand']";
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -81,5 +84,44 @@ public class SearchPageObject extends MainPageObject{
     public void assertThereIsNoResultOfSearch()
     {
         this.assertElementNotPresent(By.xpath(SEARCH_RESULT_ELEMENT), "We supposed not to find any results");
+    }
+
+    public void CheckSearchText(String expected)
+    {
+        this.CheckSearch(By.id(SEARCH_FIELD), "Cannot find search field", 5, "We see unexpected title", expected);
+    }
+
+    public void CheckSearchDoubleSubtitle()
+    {
+        this.CheckSearch(
+                By.xpath(FIRST_SUBTITLE),
+                "Cannot find 'Constitutional monarchy in Oceania' on page",
+                5,
+                "We see unexpected title",
+                "Constitutional monarchy in Oceania"
+        );
+
+        this.CheckSearch(
+                By.xpath(SECOND_SUBTITLE),
+                "Cannot find 'Rugby union team of New Zealand' on page",
+                5,
+                "We see unexpected title",
+                "Rugby union team of New Zealand"
+        );
+    }
+
+    public void waitForDoubleSubtitle()
+    {
+        this.waitForElementNotPresent(
+                By.xpath(FIRST_SUBTITLE),
+                "'Constitutional monarchy in Oceania' is still present on this page",
+                5
+        );
+
+        this.waitForElementNotPresent(
+                By.xpath(SECOND_SUBTITLE),
+                "'Rugby union team of New Zealand' is still present on this page",
+                5
+        );
     }
 }
