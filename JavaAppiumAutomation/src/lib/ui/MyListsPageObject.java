@@ -8,7 +8,9 @@ abstract public class MyListsPageObject extends MainPageObject {
 
     protected static String
     FOLDER_BY_NAME_TPL,
-    ARTICLE_BY_TITLE_TPL;
+    ARTICLE_BY_TITLE_TPL,
+    FIRST_XPATH,
+    SECOND_XPATH;
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -69,5 +71,10 @@ abstract public class MyListsPageObject extends MainPageObject {
         }
 
         this.waitForArticleToDisappearByTitle(article_title);
+    }
+
+    public void waitForArticleByXpath()
+    {
+        this.waitForElementPresent(FIRST_XPATH, "Cannot find article by xpath", 15);
     }
 }
